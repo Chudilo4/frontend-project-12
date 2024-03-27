@@ -1,33 +1,19 @@
-import {
-    createSlice,
-    createAsyncThunk
-} from '@reduxjs/toolkit'
-import axios from 'axios';
-import route from '../routes.js'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import route from '../routes'
 
-export const fetchAuth = createAsyncThunk(
-  'api/login/',
-  async (data) => {
-    const response = await axios.post(route.login, data);
-    return response.data;
-  },
-);
+export const AuthenticatedApi = createApi({
+  reducerPath: 'authenticated',
+  baseQuery: fetchBaseQuery({ baseUrl: route.loginApi }),
+  endpoints: (builder) => ({
+    addToken: builder.mutation({
+      query: (message) => ({
+        method: 'POST',
+        body: message,
+      }),
+    }),
+  }),
+});
 
-
-const authSlice = createSlice({
-  name: 'auths',
-  initialState: { user: null, token: null },
-  extraReducers: (builder) => {
-    builder
-      // Вызывается, если запрос успешно выполнился
-      .addCase(fetchAuth.fulfilled, (state, action) => {
-        state.state = action.payload;
-        window.localStorage.setItem('token', action.payload.token);
-      })
-  },
-})
-
-
-
-export const { actions } = authSlice;
-export default authSlice.reducer;
+export const {
+  useAddToken,
+} = AuthenticatedApi;

@@ -3,6 +3,7 @@ import { ChatPage } from './Components/pages/MainPage';
 import {ErrorPage} from "./Components/pages/ErrorPage";
 import { LoginPage} from "./Components/pages/LoginPage";
 import route from './routes'
+import {useSocketConnection} from "./hooks/use_connect_socket";
 
 const ProtectedRoute = ({ children }) => {
   const token = window.localStorage.getItem('token')

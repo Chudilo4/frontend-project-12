@@ -1,32 +1,40 @@
 import {
-    Container, Col, Card, Row, CardBody, Button, Form
+    Button,
+    Card,
+    CardBody,
+    Col,
+    Container,
+    Form,
+    Row
 } from 'react-bootstrap';
- import { useFormik} from 'formik';
+import {useFormik} from 'formik';
 import loginAvatar from '../../images/login.jpeg';
-import React  from "react";
-import {fetchAuth} from "../../slices/auth_slice";
-import {useDispatch} from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import {useNavigate} from "react-router-dom";
 import route from '../../routes'
+import axios from "axios";
 
 
 export const LoginPage = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
             username: '',
             password: '',
         },
-        onSubmit: async (values) => {
-            const token = window.localStorage.getItem('token');
-            if (!token) {
-                dispatch(fetchAuth(values))
-            } else {
-                navigate(route.root)
-            }
+        onSubmit: (values) => {
+            axios.post(route.loginApi, {username: values.username, password: values.password})
+                .then((response) =>  {
+                    if (response.status === 200) {
+                        const token = response.data.token
+                        const username = response.data.username
+                        window.localStorage.setItem('token', token)
+                        window.localStorage.setItem('username', username)
+                        navigate('/')
+                    }
+                })
         }
-    })
+    });
   return (
       <Container fluid className="h-100">
         <Row className="justify-content-center align-content-center h-100">
