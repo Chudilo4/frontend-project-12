@@ -2,7 +2,6 @@ import {Col} from "react-bootstrap";
 import ListGroup from "react-bootstrap/ListGroup";
 import React from "react";
 import {AddChannel} from "./AddChannel";
-import Dropdown from 'react-bootstrap/Dropdown';
 
 export const Channels = (props) => {
     return (
@@ -13,7 +12,7 @@ export const Channels = (props) => {
             </div>
             <ListGroup as={'ul'}>
                 {props.channels.map((channel) =>
-                  <ListGroup.Item as="li" key={channel.id} value={channel.id} onClick={props.callbackSetCurrentChannel} active={props.currentChannel == channel.id ? true: false}>
+                  <ListGroup.Item as="li" key={channel.id} value={channel.id} onClick={props.callbackSetCurrentChannel} active={props.currentChannel == channel.id}>
                     {channel.name}
                   </ListGroup.Item>
                 )

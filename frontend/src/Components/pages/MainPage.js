@@ -51,7 +51,7 @@ export const ChatPage = () => {
         socket.connect();
       }
     })
-  }, [socket, messages, channels])
+  }, [messages, channels])
   const callbackSetCurrentChannel = (e) => {
     console.log(e.target.value)
     setCurrentChannel(e.target.value)
