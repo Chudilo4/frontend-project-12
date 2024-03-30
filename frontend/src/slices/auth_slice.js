@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import route from '../routes'
+import {LocalRoute} from '../routes'
 
 export const AuthenticatedApi = createApi({
   reducerPath: 'authenticated',
-  baseQuery: fetchBaseQuery({ baseUrl: route.loginApi }),
+  baseQuery: fetchBaseQuery({ baseUrl: LocalRoute.loginApi }),
   endpoints: (builder) => ({
     addToken: builder.mutation({
       query: (message) => ({

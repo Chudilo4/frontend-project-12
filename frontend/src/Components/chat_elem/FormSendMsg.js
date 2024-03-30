@@ -3,11 +3,11 @@ import {ArrowBarRight} from "react-bootstrap-icons";
 import React from "react";
 import {useFormik} from "formik";
 import axios from "axios";
-import route from '../../routes'
+import {LocalRoute} from '../../routes'
 
 
 export const FormSendMsg = (props) => {
-    const {channelId} = props
+    const { currentChannel } = props
     const formik = useFormik({
         initialValues: {
             text: '',
@@ -15,8 +15,8 @@ export const FormSendMsg = (props) => {
         onSubmit: async (values) => {
             const username = window.localStorage.getItem('username')
             const token = window.localStorage.getItem('token')
-            const newMessage = { body: values.text, channelId: channelId, username: username };
-            axios.post(route.messagesApi, newMessage, {headers: {Authorization: `Bearer ${token}`}})
+            const newMessage = { body: values.text, channelId: currentChannel, username: username };
+            axios.post(LocalRoute.messagesApi, newMessage, {headers: {Authorization: `Bearer ${token}`}})
             values.text = ''
         }
     })
@@ -29,7 +29,7 @@ export const FormSendMsg = (props) => {
                       onChange={formik.handleChange}
                       value={formik.values.text}
                       aria-label={"Новое сообщение"}
-                      type="email"
+                      type="text"
                       placeholder="Введите сообщение..."
                       id="text"
                       name="text"

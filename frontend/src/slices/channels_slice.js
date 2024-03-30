@@ -1,13 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import route from '../routes'
+import {LocalRoute} from '../routes'
 
 export const fetchData = createAsyncThunk(
     'channels/fetchData',
     async () => {
     const token = window.localStorage.getItem('token')
-    const response = await axios.get(route.channelsApi, {headers: { Authorization: `Bearer ${token}`,},});
+    const response = await axios.get(LocalRoute.channelsApi, {headers: { Authorization: `Bearer ${token}`,},});
     return response.data;
 });
 

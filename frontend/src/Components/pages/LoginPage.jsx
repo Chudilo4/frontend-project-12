@@ -11,7 +11,7 @@ import {useFormik} from 'formik';
 import loginAvatar from '../../images/login.jpeg';
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import route from '../../routes'
+import {LocalRoute} from '../../routes'
 import axios from "axios";
 
 
@@ -23,7 +23,7 @@ export const LoginPage = () => {
             password: '',
         },
         onSubmit: (values) => {
-            axios.post(route.loginApi, {username: values.username, password: values.password})
+            axios.post(LocalRoute.loginApi, {username: values.username, password: values.password})
                 .then((response) =>  {
                     if (response.status === 200) {
                         const token = response.data.token

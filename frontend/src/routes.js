@@ -1,4 +1,4 @@
-export default {
+export const LocalRoute = {
   loginApi: '/api/v1/login', //post
   channelsApi: '/api/v1/channels', //get
   signupApi: '/api/v1/signup', //post, get, PATCH, DELETE
