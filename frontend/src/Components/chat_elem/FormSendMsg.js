@@ -2,21 +2,20 @@ import {Button, Form} from "react-bootstrap";
 import {ArrowBarRight} from "react-bootstrap-icons";
 import React from "react";
 import {useFormik} from "formik";
-import axios from "axios";
-import {LocalRoute} from '../../routes'
+import {PostMessage} from "../../slices/message_slice";
+import {useDispatch} from "react-redux";
 
 
 export const FormSendMsg = (props) => {
-    const { currentChannel } = props
+    const { currentChannel } = props;
+    const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
             text: '',
         },
         onSubmit: async (values) => {
-            const username = window.localStorage.getItem('username')
-            const token = window.localStorage.getItem('token')
-            const newMessage = { body: values.text, channelId: currentChannel, username: username };
-            axios.post(LocalRoute.messagesApi, newMessage, {headers: {Authorization: `Bearer ${token}`}})
+            const data = {...values, currentChannel: currentChannel}
+            dispatch(PostMessage(data));
             values.text = ''
         }
     })

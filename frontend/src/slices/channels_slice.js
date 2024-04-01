@@ -1,15 +1,24 @@
-/* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {LocalRoute} from '../routes'
 
-export const fetchData = createAsyncThunk(
-    'channels/fetchData',
+export const GetChannels = createAsyncThunk(
+    'GetChannels',
     async () => {
     const token = window.localStorage.getItem('token')
     const response = await axios.get(LocalRoute.channelsApi, {headers: { Authorization: `Bearer ${token}`,},});
     return response.data;
 });
+
+export const PostChannel = createAsyncThunk(
+  'PostChannel',
+  async (values) => {
+    const token = window.localStorage.getItem('token')
+    const newChannel = { name: values.name };
+    const response = await axios.post(LocalRoute.channelsApi, newChannel, {headers: {Authorization: `Bearer ${token}`,},});
+    return response.data
+  }
+)
 
 const channelsAdapter = createEntityAdapter();
 
@@ -26,15 +35,18 @@ const channelsSlice = createSlice({
   },
   extraReducers: (builder) => {
       builder
-          .addCase(fetchData.pending, (state) => {
-          })
-          .addCase(fetchData.fulfilled, (state, action) => {
+          .addCase(GetChannels.pending, (state) => {})
+          .addCase(GetChannels.fulfilled, (state, action) => {
             channelsAdapter.addMany(state, action.payload);
           })
-          .addCase(fetchData.rejected, (state, {payload}) => {
-          });
+          .addCase(GetChannels.rejected, (state, {payload}) => {})
+          .addCase(PostChannel.pending, () => {})
+          .addCase(PostChannel.fulfilled, (state, action) => {
+            channelsAdapter.addOne(state, action.payload);
+          })
+          .addCase(PostChannel.rejected, (state, {payload}) => {})
     },
 });
-export const { actions } = channelsSlice;
-export const selectors = channelsAdapter.getSelectors((state) => state.channels);
+export const { addChannel, addChannels, removeChannel, updateChannel } = channelsSlice.actions;
+export const selectorsChannels = channelsAdapter.getSelectors((state) => state.channels);
 export default channelsSlice.reducer;

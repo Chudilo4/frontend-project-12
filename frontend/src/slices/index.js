@@ -1,14 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {AuthenticatedApi} from './auth_slice.js';
-import channelsReduser from './channels_slice'
-import {messagesApi} from './message_slice'
+import channelsReducer from './channels_slice'
+import messagesReducer from './message_slice'
+import currentChannelReducer from './CurrentChannelSlice'
 
 export default configureStore({
   reducer: {
-    [AuthenticatedApi.reducerPath]: AuthenticatedApi.reducer,
-    channels: channelsReduser,
-    [messagesApi.reducerPath]: messagesApi.reducer,
-  },
-   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(messagesApi.middleware),
+    channels: channelsReducer,
+    messages: messagesReducer,
+    currentChannel: currentChannelReducer,
+  }
 });

@@ -1,12 +1,13 @@
 import {useFormik} from "formik";
-import axios from "axios";
 import {Button, Form, Modal} from "react-bootstrap";
 import {PlusSquare} from "react-bootstrap-icons";
 import React, {useState} from "react";
-import {LocalRoute} from '../../routes'
+import {PostChannel} from "../../slices/channels_slice";
+import {useDispatch} from "react-redux";
 
 
-export const AddChannel = () => {
+export const AddChannel = (props) => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -16,13 +17,7 @@ export const AddChannel = () => {
             name: '',
         },
         onSubmit: (values) => {
-            const token = window.localStorage.getItem('token')
-            const newChannel = { name: values.name };
-            axios.post(LocalRoute.channelsApi, newChannel, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            })
+            dispatch(PostChannel(values));
             values.name = ''
             handleClose()
         }
